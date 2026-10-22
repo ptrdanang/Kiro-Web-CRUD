@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portal Berita Teknologi, Jaringan, Cloud Computing, dan AI terkini.">
+  <meta name="theme-color" content="#ffffff">
+  <title>PortalBerita — Waliddhi Danang Tech News</title>
+
+  <link rel="icon" type="image/png" href="assetss/favicon.png">
+
+  <!-- Google Fonts: DM Sans & Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------------------------------------------------------------------------- */
+    /* 1. CSS VARIABLES & SYSTEM TEMA                                             */
+    /* -------------------------------------------------------------------------- */
+    :root {
+      --bg-main: #ffffff;
+      --bg-soft: #f8fafc;
+      --bg-card: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --green: #2563eb;         /* Accent Blue / Green Variable Name kept for theme parity */
+      --green-dark: #1d4ed8;
+      --mint: #eff6ff;
+      --line: #e2e8f0;
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 20px 40px rgba(37, 99, 235, 0.15);
+      --radius: 20px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --danger: #ef4444;
+      --danger-dark: #dc2626;
+      --warning: #f59e0b;
+    }
+
+    [data-theme="dark"] {
+      --bg-main: #0f172a;
+      --bg-soft: #1e293b;
+      --bg-card: #1e293b;
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --green: #3b82f6;
+      --green-dark: #60a5fa;
+      --mint: rgba(59, 130, 246, 0.15);
+      --line: #334155;
+      --header-bg: rgba(15, 23, 42, 0.85);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 20px 40px rgba(59, 130, 246, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0;
+      background: var(--bg-main);
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+    .container {
+      width: min(1440px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .section { padding: 60px 0; }
+    .section-soft { background: var(--bg-soft); transition: background 0.4s ease; }
+
+    /* Skip link accessibility */
+    .skip-link {
+      position: absolute; top: -60px; left: 16px;
+      background: var(--ink); color: var(--bg-main);
+      padding: 10px 14px; border-radius: 8px; z-index: 100;
+    }
+    .skip-link:focus { top: 10px; }
+
+    /* Typography */
+    h1, h2, h3, h4 { font-family: Manrope, sans-serif; letter-spacing: -1.2px; line-height: 1.2; color: var(--ink); margin: 0; }
+    h1 { font-size: clamp(32px, 4vw, 54px); font-weight: 800; }
+    h2 { font-size: clamp(24px, 3vw, 36px); font-weight: 800; }
+    h3 { font-size: 19px; font-weight: 700; }
+
+    .eyebrow { font-size: 11px; letter-spacing: 1.8px; font-weight: 700; color: var(--green); margin-bottom: 12px; text-transform: uppercase; }
+    .accent-text { color: var(--green); }
+    .status-dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); margin-right: 8px; vertical-align: middle;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2); animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 2. HEADER & NAVIGATION                                                    */
+    /* -------------------------------------------------------------------------- */
+    .site-header {
+      height: 80px; position: sticky; top: 0; z-index: 50;
+      background: var(--header-bg); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line); transition: background 0.4s ease, border-color 0.4s ease;
+    }
+    .site-header .container { width: min(1480px, calc(100% - 48px)); }
+    .nav { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-family: Manrope, sans-serif; font-size: 19px; font-weight: 800; letter-spacing: -.8px; }
+    .brand-mark { width: 38px; height: 38px; border-radius: 11px; background: var(--green); color: white; display: grid; place-items: center; font-size: 15px; font-weight: 800; }
+    .brand-dot { color: var(--green); margin-left: 2px; }
+
+    .nav-links { display: flex; align-items: center; gap: 16px; font-size: 14px; font-weight: 600; color: var(--muted); }
+    .nav-links a:hover { color: var(--green); }
+
+    .theme-toggle {
+      background: var(--bg-soft); border: 1px solid var(--line);
+      width: 42px; height: 42px; border-radius: 12px;
+      display: grid; place-items: center; font-size: 18px;
+      transition: var(--transition); color: var(--ink);
+    }
+    .theme-toggle:hover { transform: scale(1.08); border-color: var(--green); }
+    [data-theme="light"] .theme-icon.sun { display: none; }
+    [data-theme="dark"] .theme-icon.moon { display: none; }
+
+    .menu-toggle { display: none; background: none; border: 0; padding: 8px; }
+    .menu-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); margin: 5px; border-radius: 2px; }
+
+    /* -------------------------------------------------------------------------- */
+    /* 3. BUTTONS & BADGES                                                       */
+    /* -------------------------------------------------------------------------- */
+    .button {
+      min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 0 20px; border-radius: 12px; font-weight: 700; font-size: 14px;
+      transition: var(--transition); border: 0;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { background: var(--green); color: white; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); }
+    .button-primary:hover { background: var(--green-dark); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35); }
+    .button-secondary { border: 1px solid var(--line); background: var(--bg-card); color: var(--ink); }
+    .button-secondary:hover { border-color: var(--green); color: var(--green); }
+    .button-danger { background: var(--danger); color: white; }
+    .button-danger:hover { background: var(--danger-dark); }
+    .button-sm { min-height: 34px; padding: 0 12px; font-size: 12px; border-radius: 8px; }
+
+    .tag { display: inline-block; padding: 4px 10px; border-radius: 8px; background: var(--mint); color: var(--green); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+
+    /* -------------------------------------------------------------------------- */
+    /* 4. TRUST STRIP & CONTROL BAR (SEARCH & FILTER)                             */
+    /* -------------------------------------------------------------------------- */
+    .trust-strip { border-block: 1px solid var(--line); background: var(--bg-main); }
+    .trust-inner { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .trust-inner > span { font-size: 11px; letter-spacing: 1.5px; color: var(--muted); font-weight: 700; }
+    .trust-inner strong { font-family: Manrope, sans-serif; font-size: 14px; color: var(--ink); transition: var(--transition); cursor: pointer; }
+    .trust-inner strong:hover, .trust-inner strong.active { color: var(--green); }
+    .trust-inner i { height: 4px; width: 4px; border-radius: 50%; background: var(--line); }
+
+    .controls-bar {
+      display: flex; gap: 16px; justify-content: space-between; align-items: center;
+      margin-bottom: 30px; flex-wrap: wrap;
+    }
+    .search-box {
+      position: relative; flex: 1; max-width: 480px; min-width: 260px;
+    }
+    .search-box input {
+      width: 100%; height: 46px; padding: 0 16px 0 42px; background: var(--bg-card);
+      border: 1px solid var(--line); border-radius: 12px; color: var(--ink); font-size: 14px;
+      transition: var(--transition);
+    }
+    .search-box input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 16px; }
+
+    .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      padding: 8px 16px; border-radius: 30px; border: 1px solid var(--line);
+      background: var(--bg-card); color: var(--muted); font-size: 13px; font-weight: 600;
+      transition: var(--transition); cursor: pointer;
+    }
+    .pill:hover, .pill.active { background: var(--mint); border-color: var(--green); color: var(--green); }
+
+    /* -------------------------------------------------------------------------- */
+    /* 5. HERO / FEATURED NEWS BANNER                                            */
+    /* -------------------------------------------------------------------------- */
+    .hero-news {
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px;
+      background: var(--bg-card); border: 1px solid var(--line);
+      border-radius: var(--radius); overflow: hidden; margin-bottom: 50px;
+      box-shadow: var(--shadow); transition: var(--transition);
+    }
+    .hero-news:hover { border-color: var(--green); box-shadow: var(--shadow-hover); }
+    .hero-news-img {
+      width: 100%; height: 100%; min-height: 320px; object-fit: cover;
+      cursor: zoom-in; transition: transform 0.4s ease;
+    }
+    .hero-news-img:hover { transform: scale(1.02); }
+    .hero-news-content {
+      padding: 40px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .hero-news-content h1 { font-size: clamp(24px, 3vw, 36px); margin: 12px 0; }
+    .hero-news-content p { color: var(--muted); font-size: 15px; margin-bottom: 24px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .news-meta { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--muted); font-weight: 600; }
+    .news-meta span { display: flex; align-items: center; gap: 4px; }
+
+    /* -------------------------------------------------------------------------- */
+    /* 6. NEWS GRID & CARDS                                                      */
+    /* -------------------------------------------------------------------------- */
+    .news-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px;
+    }
+    .news-card {
+      background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius);
+      overflow: hidden; transition: var(--transition); display: flex; flex-direction: column;
+      box-shadow: var(--shadow);
+    }
+    .news-card:hover { transform: translateY(-8px); border-color: var(--green); box-shadow: var(--shadow-hover); }
+    .news-card-img-wrap {
+      width: 100%; height: 200px; overflow: hidden; position: relative; background: var(--bg-soft);
+      cursor: zoom-in;
+    }
+    .news-card-img {
+      width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;
+    }
+    .news-card:hover .news-card-img { transform: scale(1.05); }
+    .badge-trending {
+      position: absolute; top: 12px; right: 12px; background: var(--warning); color: #000;
+      font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
+    }
+
+    .news-card-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+    .news-card-body h3 { font-size: 18px; margin: 10px 0; line-height: 1.35; flex-shrink: 0; }
+    .news-card-body p {
+      font-size: 13px; color: var(--muted); line-height: 1.7; flex: 1; margin-bottom: 18px;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .news-card-footer {
+      border-top: 1px solid var(--line); padding-top: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .card-actions { display: flex; gap: 6px; }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center; padding: 60px 20px; border: 2px dashed var(--line);
+      border-radius: var(--radius); grid-column: 1 / -1;
+    }
+    .empty-state h3 { margin-bottom: 8px; color: var(--muted); }
+
+    /* -------------------------------------------------------------------------- */
+    /* 7. MODAL SYSTEM & TRASH LIST STYLES                                        */
+    /* -------------------------------------------------------------------------- */
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+    }
+    .modal.active { opacity: 1; visibility: visible; }
+    .modal-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px);
+    }
+    .modal-container {
+      position: relative; z-index: 2; background: var(--bg-card); border: 1px solid var(--line);
+      border-radius: 24px; width: min(650px, 100%); max-height: 90vh; overflow-y: auto; padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3); transform: translateY(20px) scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal.active .modal-container { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute; top: 20px; right: 20px; background: var(--bg-soft); border: 1px solid var(--line);
+      color: var(--ink); width: 36px; height: 36px; border-radius: 50%; font-size: 20px;
+      display: grid; place-items: center; cursor: pointer; transition: var(--transition);
+    }
+    .modal-close:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+    /* Trash Items Styling */
+    .trash-list { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+    .trash-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 16px; background: var(--bg-soft); border: 1px solid var(--line);
+      border-radius: 14px; transition: var(--transition);
+    }
+    .trash-item:hover { border-color: var(--green); }
+    .trash-item-info { flex: 1; overflow: hidden; }
+    .trash-item-info h4 { font-size: 15px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .trash-item-info span { font-size: 12px; color: var(--muted); }
+    .trash-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    /* Form Styling */
+    .form-grid { display: grid; gap: 16px; }
+    .form-group { display: grid; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 700; color: var(--ink); }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--line);
+      border-radius: 12px; color: var(--ink); font-family: inherit; font-size: 13px;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .form-checkbox input { width: 18px; height: 18px; accent-color: var(--green); }
+
+    /* Read Article Modal Detail */
+    .read-article-img {
+      width: 100%; max-height: 360px; object-fit: cover; border-radius: 16px; margin: 16px 0;
+      cursor: zoom-in; transition: opacity 0.3s;
+    }
+    .read-article-img:hover { opacity: 0.9; }
+    .read-article-body { font-size: 15px; color: var(--ink); line-height: 1.8; white-space: pre-line; }
+
+    /* -------------------------------------------------------------------------- */
+    /* LIGHTBOX FULLSCREEN IMAGE VIEWER STYLES                                   */
+    /* -------------------------------------------------------------------------- */
+    .image-lightbox {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 3000; background: rgba(10, 15, 30, 0.92); backdrop-filter: blur(12px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 24px;
+    }
+    .image-lightbox.active { opacity: 1; visibility: visible; }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 24px; background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25); color: white; width: 44px; height: 44px;
+      border-radius: 50%; font-size: 24px; display: grid; place-items: center; cursor: pointer;
+      transition: var(--transition); z-index: 3001;
+    }
+    .lightbox-close:hover { background: var(--danger); border-color: var(--danger); transform: scale(1.1); }
+    .lightbox-img {
+      max-width: 90vw; max-height: 82vh; object-fit: contain; border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6); transform: scale(0.9); transition: transform 0.3s ease;
+    }
+    .image-lightbox.active .lightbox-img { transform: scale(1); }
+    .lightbox-caption {
+      margin-top: 18px; color: #f8fafc; font-size: 14px; font-weight: 600; text-align: center;
+      max-width: 800px; background: rgba(0,0,0,0.4); padding: 8px 18px; border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 2000;
+      background: var(--ink); color: var(--bg-main); padding: 14px 22px;
+      border-radius: 12px; font-weight: 600; font-size: 13px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: translateY(100px); opacity: 0;
+      transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* -------------------------------------------------------------------------- */
+    /* 8. FOOTER                                                                 */
+    /* -------------------------------------------------------------------------- */
+    .footer { border-top: 1px solid var(--line); background: var(--bg-main); margin-top: 80px; }
+    .footer-inner { min-height: 90px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .footer-brand { font-size: 18px; }
+    .footer-inner p, .copyright, .back-top { font-size: 12px; color: var(--muted); margin: 0; }
+    .back-top:hover { color: var(--green); }
+
+    /* -------------------------------------------------------------------------- */
+    /* 9. RESPONSIVE MEDIA QUERIES                                               */
+    /* -------------------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      .hero-news { grid-template-columns: 1fr; }
+      .news-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .container { width: min(100% - 32px, 540px); }
+      .menu-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 80px; left: 0; right: 0;
+        background: var(--bg-card); padding: 20px; border-bottom: 1px solid var(--line);
+        flex-direction: column; align-items: stretch; gap: 14px; box-shadow: var(--shadow);
+      }
+      .nav-links.open { display: flex; }
+      .news-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .trust-inner { justify-content: center; gap: 10px; }
+      .trust-inner i { display: none; }
+      .trust-inner span { width: 100%; text-align: center; }
+      .trash-item { flex-direction: column; align-items: flex-start; }
+      .trash-actions { width: 100%; justify-content: flex-end; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Lewati ke konten</a>
+
+  <!-- HEADER / NAVIGASI -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Navigasi Utama">
+      <a class="brand" href="#" aria-label="PortalBerita Utama">
+        <span class="brand-mark">DN</span>
+        <span>Danang <span class="brand-dot">News</span><span class="brand-dot">38</span><span class="brand-dot">XII</span><span class="brand-dot">TKJ</span><span class="brand-dot">1</span></span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#featured">Berita Utama</a>
+        <a href="#newsList">Kategori</a>
+        
+        <!-- Tombol Profil Pembuat Baru -->
+        <button class="button button-secondary button-sm" id="btnOpenProfileModal">
+          👨‍💻 Profil Pembuat
+        </button>
+
+        <!-- Tombol Tong Sampah -->
+        <button class="button button-secondary button-sm" id="btnOpenTrashModal" title="Lihat Tong Sampah">
+          🗑️ Sampah <span id="trashBadge" style="background:var(--danger); color:white; border-radius:10px; padding:2px 6px; font-size:10px; margin-left:2px;">0</span>
+        </button>
+
+        <button class="button button-primary button-sm" id="btnOpenAddModal">
+          <span>+</span> Tambah Berita
+        </button>
+
+        <!-- Toggle Light / Dark Mode -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Ganti Mode Terang/Gelap">
+          <span class="theme-icon sun">☀️</span>
+          <span class="theme-icon moon">🌙</span>
+        </button>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Buka Menu Navigasi">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- TRUST STRIP / TOPIC BANNER -->
+    <section class="trust-strip">
+      <div class="container trust-inner">
+        <span>TOPIK TERHANGAT</span>
+        <strong class="topic-filter active" data-category="ALL">Semua Berita</strong><i></i>
+        <strong class="topic-filter" data-category="Cloud Computing">Cloud Computing</strong><i></i>
+        <strong class="topic-filter" data-category="Networking">Networking</strong><i></i>
+        <strong class="topic-filter" data-category="Artificial Intelligence">Generative AI</strong><i></i>
+        <strong class="topic-filter" data-category="Web Development">Web Development</strong>
+      </div>
+    </section>
+
+    <!-- SECTION HERO / FEATURED NEWS -->
+    <section class="section container" id="featured">
+      <p class="eyebrow"><span class="status-dot"></span> BERITA UNGGULAN HARI INI</p>
+      <div id="featuredNewsContainer">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </section>
+
+    <!-- SECTION NEWS LIST & CRUD INTERFACE -->
+    <section class="section section-soft" id="newsList">
+      <div class="container">
+        <div class="controls-bar">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Cari berita berdasarkan judul, ringkasan, atau penulis...">
+          </div>
+
+          <div class="filter-pills" id="categoryPills">
+            <button class="pill active" data-category="ALL">Semua</button>
+            <button class="pill" data-category="Cloud Computing">Cloud</button>
+            <button class="pill" data-category="Networking">Networking</button>
+            <button class="pill" data-category="Artificial Intelligence">AI</button>
+            <button class="pill" data-category="Web Development">Web Dev</button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h2>Daftar Artikel <span class="accent-text" id="newsCount">(0)</span></h2>
+          <span class="eyebrow" style="margin:0;">SISTEM CRUD & TRASH RECOVERY</span>
+        </div>
+
+        <!-- NEWS GRID CONTAINER -->
+        <div class="news-grid" id="newsGrid">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a class="brand footer-brand" href="#">
+        <span class="brand-mark">NB</span>
+        <span>Danang <span class="brand-dot">News</span></span>
+      </a>
+      <p>Dikembangkan dengan gaya desain khas Portofolio Waliddhi Danang.</p>
+      <a href="#" class="back-top">Kembali ke atas ↑</a>
+      <span class="copyright">© <span id="year"></span> PortalBerita. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- MODAL 1: FORM CREATE / EDIT BERITA (CRUD)                                  -->
+  <!-- -------------------------------------------------------------------------- -->
+  <div class="modal" id="newsFormModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+      <button class="modal-close" id="btnCloseFormModal">&times;</button>
+      <div style="margin-bottom: 20px;">
+        <p class="eyebrow" id="formModalEyebrow">TAMBAH ARTIKEL</p>
+        <h3 id="formModalTitle">Tulis Berita Baru</h3>
+      </div>
+
+      <form id="newsForm" class="form-grid">
+        <input type="hidden" id="newsId">
+
+        <div class="form-group">
+          <label for="newsTitle">Judul Berita *</label>
+          <input type="text" id="newsTitle" placeholder="Masukkan judul berita yang menarik..." required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newsCategory">Kategori *</label>
+            <select id="newsCategory" required>
+              <option value="Cloud Computing">Cloud Computing</option>
+              <option value="Networking">Networking</option>
+              <option value="Artificial Intelligence">Artificial Intelligence</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Edukasi IT">Edukasi IT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="newsAuthor">Penulis / Sumber *</label>
+            <input type="text" id="newsAuthor" placeholder="Nama Penulis / Tim Redaksi" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newsImageUrl">URL Gambar Berita (Sertakan http:// atau https://)</label>
+          <input type="text" id="newsImageUrl" placeholder="Contoh: assets/berita1.jpg">
+          <small style="font-size:11px; color:var(--muted);">Kosongkan jika ingin menggunakan gambar bawaan otomatis.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="newsSummary">Ringkasan Berita (Singkat) *</label>
+          <textarea id="newsSummary" rows="2" placeholder="Sajikan ringkasan 1-2 kalimat untuk tampilan kartu..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="newsContent">Isi Berita Lengkap *</label>
+          <textarea id="newsContent" rows="6" placeholder="Tuliskan berita secara mendalam di sini..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-checkbox">
+            <input type="checkbox" id="newsIsFeatured">
+            <span>Jadikan Berita Utama / Featured Banner (Tampil di Atas)</span>
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 10px;">
+          <button type="button" class="button button-secondary" id="btnCancelForm">Batal</button>
+          <button type="submit" class="button button-primary">Simpan Berita</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- MODAL 2: DETAIL BACA BERITA                                               -->
+  <!-- -------------------------------------------------------------------------- -->
+  <div class="modal" id="readNewsModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container" style="width: min(800px, 100%);">
+      <button class="modal-close" id="btnCloseReadModal">&times;</button>
+      <div>
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
+          <span class="tag" id="readCategory">Kategori</span>
+          <span id="readTrending" class="badge-trending" style="position:static;">TRENDING</span>
+        </div>
+        <h2 id="readTitle" style="font-size: clamp(22px, 3vw, 32px); margin-bottom: 12px;">Judul Berita</h2>
+        <div class="news-meta" style="margin-bottom: 16px;">
+          <span>👤 <strong id="readAuthor">Penulis</strong></span> • 
+          <span>📅 <span id="readDate">Tanggal</span></span>
+        </div>
+      </div>
+
+      <img id="readImage" src="" alt="Detail Gambar Berita" class="read-article-img" title="Klik untuk lihat ukuran penuh" onclick="openLightbox(this.src, document.getElementById('readTitle').textContent)">
+
+      <div id="readContent" class="read-article-body">
+        <!-- Isi berita lengkap dimasukkan di sini -->
+      </div>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- MODAL 3: FITUR TONG SAMPAH (RECYCLE BIN)                                    -->
+  <!-- -------------------------------------------------------------------------- -->
+  <div class="modal" id="trashModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container" style="width: min(720px, 100%);">
+      <button class="modal-close" id="btnCloseTrashModal">&times;</button>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <p class="eyebrow" style="color:var(--danger);">RECYCLE BIN</p>
+          <h3>Tong Sampah Berita</h3>
+        </div>
+        <button class="button button-danger button-sm" id="btnEmptyTrash" style="display:none;">
+          🗑️ Kosongkan Sampah
+        </button>
+      </div>
+
+      <div id="trashContainer" class="trash-list">
+        <!-- Trash items rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- MODAL 4: PROFIL PEMBUAT                                                   -->
+  <!-- -------------------------------------------------------------------------- -->
+  <div class="modal" id="profileModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container" style="width: min(550px, 100%); text-align: center;">
+      <button class="modal-close" id="btnCloseProfileModal">&times;</button>
+      
+      <div style="margin-bottom: 20px;">
+        <p class="eyebrow">TENTANG DEVELOPER</p>
+        <h3>Profil Pembuat Portal</h3>
+      </div>
+
+      <!-- Foto / Avatar Pembuat -->
+      <div style="width: 110px; height: 110px; border-radius: 50%; overflow: hidden; margin: 0 auto 16px auto; border: 3px solid var(--green); box-shadow: var(--shadow); cursor: zoom-in;" onclick="openLightbox('assetss/danang.jpg', 'Foto Profil Waliddhi Danang')">
+        <img src="assetss/danang.jpg" alt="Foto Profil" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300'">
+      </div>
+
+      <h2 style="font-size: 22px; margin-bottom: 4px;">Waliddhi Danang</h2>
+      <p style="color: var(--green); font-weight: 700; font-size: 14px; margin-bottom: 16px;">
+        Web Developer & Infrastructure Specialist
+      </p>
+
+      <p style="font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px;">
+        Siswa / pengembang yang berfokus pada teknologi Cloud Computing, Jaringan Komputer, dan Pengembangan Web Modern. Berkomitmen untuk menciptakan aplikasi web yang cepat, responsif, serta mudah digunakan.
+      </p>
+
+      <!-- Detail Info Singkat -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; background: var(--bg-soft); padding: 16px; border-radius: 12px; border: 1px solid var(--line); margin-bottom: 24px; text-align: left;">
+        <div>
+          <span style="font-size:11px; color:var(--muted); display:block; font-weight:700;">INSTANSI / SCHOOL</span>
+          <strong style="font-size:13px;">SMK Islam 1 Blitar</strong>
+        </div>
+        <div>
+          <span style="font-size:11px; color:var(--muted); display:block; font-weight:700;">FOKUS / BIDANG</span>
+          <strong style="font-size:13px;">TKJ & Cloud Computing</strong>
+        </div>
+      </div>
+
+      <!-- Tombol Kontak / Portofolio -->
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <a href="https://github.com/ptrdanang" target="_blank" class="button button-secondary button-sm">🌐 GitHub</a>
+        <a href="mailto:danang@example.com" class="button button-primary button-sm">✉️ Hubungi Pembuat</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- LIGHTBOX / FULLSCREEN IMAGE VIEWER                                         -->
+  <!-- -------------------------------------------------------------------------- -->
+  <div class="image-lightbox" id="imageLightbox">
+    <button class="lightbox-close" id="btnCloseLightbox" aria-label="Tutup Layar Penuh">&times;</button>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="Pratinjau Layar Penuh">
+    <div id="lightboxCaption" class="lightbox-caption">Judul Gambar</div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">Notifikasi</div>
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- JAVASCRIPT LOGIC (CRUD + TRASH CAN + INTERACTIVITY + LIGHTBOX)             -->
+  <!-- -------------------------------------------------------------------------- -->
+  <script>
+    // Initial Seed Data Berita
+    const initialNewsData = [
+      {
+        id: "news-1",
+        title: "Perwakilan SMK Islam 1 Blitar di LKS Cloud Computing Jawa Timur",
+        category: "Cloud Computing",
+        author: "Tim Redaksi Tekno",
+        date: "04 April 2026",
+        imageUrl: "assetss/Sertifikat-1.jpg",
+        summary: "Ajang LKS tingkat provinsi Jawa Timur kembali membuktikan kompetensi siswa TKJ dalam merancang infrastruktur cloud yang tangguh dan efisien.",
+        content: `SURABAYA — Perwakilan peserta LKS Cloud Computing dari SMK Islam 1 Blitar pada ajang Lomba Kompetensi Siswa (LKS) Tingkat Provinsi Jawa Timur.\n\nDalam kompetisi mendalam ini, peserta diuji dalam konfigurasi otomatisasi cloud, manajemen server berskala besar, jaringan virtual, dan mitigasi keamanan cyber berbasis cloud provider terkemuka. Hasil ini menegaskan kualitas pembelajaran vokasi teknologi jaringan yang terus berkembang melampaui standar industri.`,
+        isFeatured: true
+      },
+      {
+        id: "news-2",
+        title: "Penerapan Generatif AI dalam Industri Pengembangan Software Modern",
+        category: "Artificial Intelligence",
+        author: "Waliddhi Danang",
+        date: "20 Oktober 2026",
+        imageUrl: "assetss/image copy.png",
+        summary: "Bagaimana teknologi Generative AI mengubah lanskap coding, refactoring, dan otomatisasi deployment pengembang web modern.",
+        content: `Perkembangan Generative AI kini bukan lagi sekadar tren hiburan, melainkan pilar utama efisiensi industri rekayasa perangkat lunak. Menurut riset terbaru, lebih dari 70% pengembang software menggunakan asisten AI untuk mempercepat pembuatan modul dasar, analisis bugs, serta pengujian kode secara otomatis.\n\nMeskipun demikian, peran pemahaman fundamental pemrograman dan arsitektur sistem tetap menjadi kunci utama agar solusi AI yang dibuat tetap aman dan optimal.`,
+        isFeatured: false
+      },
+      {
+        id: "news-3",
+        title: "Panduan Praktis Splicing Fiber Optic dan Troubleshooting Jaringan LAN",
+        category: "Networking",
+        author: "Lab TKJ Press",
+        date: "18 Oktober 2026",
+        imageUrl: "assetss/image copy 2.png",
+        summary: "Teknik penyambungan serat optik yang presisi serta strategi cepat troubleshooting koneksi jaringan komputer lokal.",
+        content: `Jaringan berbasis serat optik (Fiber Optic) membutuhkan tingkat presisi tinggi dalam proses penyambungan (splicing). Kerugian daya gelombang cahaya (attenuation) dapat terjadi akibat pemotongan core yang kurang rapi.\n\nDalam panduan teknis ini, tim instruktur TKJ membagikan tips penggunaan Fusion Splicer, Optical Time Domain Reflectometer (OTDR), serta langkah-langkah sistematis mengisolasi hambatan koneksi kabel LAN pada skala gedung perkantoran.`,
+        isFeatured: false
+      },
+      {
+        id: "news-4",
+        title: "Arsitektur Web Modern: Mengintegrasikan UI Responsif & Dark Mode Dual Theme",
+        category: "Web Development",
+        author: "Danang Web Dev",
+        date: "15 Oktober 2026",
+        imageUrl: "assetss/image.png",
+        summary: "Desain web interaktif kini berfokus pada aksesibilitas tinggi, fleksibilitas CSS Variables, serta performa visual yang menawan.",
+        content: `Membuat pengguna merasa nyaman saat mengunjungi aplikasi web adalah prioritas utama. Dengan implementasi variabel CSS native dan atribut data-theme, pembuatan fitur Dual Theme (Mode Terang & Gelap) menjadi sangat bersih tanpa bergantung pada pustaka eksternal yang berat.\n\nSimak bagaimana kombinasi tipografi Manrope dan DM Sans mampu memberikan kenyamanan membaca artikel dalam durasi yang panjang.`,
+        isFeatured: false
+      }
+    ];
+
+    // State Management
+    let newsList = [];
+    let trashList = [];
+    let activeCategory = "ALL";
+    let searchQuery = "";
+
+    // DOM Elements
+    const themeToggleBtn = document.getElementById("themeToggle");
+    const menuToggleBtn = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    const featuredNewsContainer = document.getElementById("featuredNewsContainer");
+    const newsGrid = document.getElementById("newsGrid");
+    const newsCountEl = document.getElementById("newsCount");
+    const searchInput = document.getElementById("searchInput");
+    const categoryPills = document.getElementById("categoryPills");
+
+    // Modal Elements
+    const newsFormModal = document.getElementById("newsFormModal");
+    const btnOpenAddModal = document.getElementById("btnOpenAddModal");
+    const btnCloseFormModal = document.getElementById("btnCloseFormModal");
+    const btnCancelForm = document.getElementById("btnCancelForm");
+    const newsForm = document.getElementById("newsForm");
+
+    const readNewsModal = document.getElementById("readNewsModal");
+    const btnCloseReadModal = document.getElementById("btnCloseReadModal");
+
+    // Trash Modal Elements
+    const trashModal = document.getElementById("trashModal");
+    const btnOpenTrashModal = document.getElementById("btnOpenTrashModal");
+    const btnCloseTrashModal = document.getElementById("btnCloseTrashModal");
+    const trashContainer = document.getElementById("trashContainer");
+    const trashBadge = document.getElementById("trashBadge");
+    const btnEmptyTrash = document.getElementById("btnEmptyTrash");
+
+    // Profile Modal Elements
+    const profileModal = document.getElementById("profileModal");
+    const btnOpenProfileModal = document.getElementById("btnOpenProfileModal");
+    const btnCloseProfileModal = document.getElementById("btnCloseProfileModal");
+
+    // Lightbox Elements
+    const imageLightbox = document.getElementById("imageLightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    const btnCloseLightbox = document.getElementById("btnCloseLightbox");
+
+    // Toast
+    const toast = document.getElementById("toast");
+
+    // Initialize App
+    document.addEventListener("DOMContentLoaded", () => {
+      initTheme();
+      loadNewsData();
+      renderNews();
+      renderTrash();
+      setupEventListeners();
+      document.getElementById("year").textContent = new Date().getFullYear();
+    });
+
+    // 1. Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem("news_theme");
+      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = savedTheme || (systemDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("news_theme", newTheme);
+      showToast(`Mode tema diubah ke ${newTheme === 'dark' ? 'Gelap 🌙' : 'Terang ☀️'}`);
+    });
+
+    // Mobile Menu Toggle
+    menuToggleBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    // 2. LocalStorage CRUD & Trash Operations
+    function loadNewsData() {
+      // Load News List
+      const storedNews = localStorage.getItem("danang_news_data");
+      if (storedNews) {
+        try { newsList = JSON.parse(storedNews); } catch (e) { newsList = [...initialNewsData]; }
+      } else {
+        newsList = [...initialNewsData];
+        saveNewsToStorage();
+      }
+
+      // Load Trash List
+      const storedTrash = localStorage.getItem("danang_news_trash");
+      if (storedTrash) {
+        try { trashList = JSON.parse(storedTrash); } catch (e) { trashList = []; }
+      } else {
+        trashList = [];
+        saveTrashToStorage();
+      }
+    }
+
+    function saveNewsToStorage() {
+      localStorage.setItem("danang_news_data", JSON.stringify(newsList));
+    }
+
+    function saveTrashToStorage() {
+      localStorage.setItem("danang_news_trash", JSON.stringify(trashList));
+    }
+
+    // 3. Render News Items (Featured Banner & Grid Cards)
+    function renderNews() {
+      // Filter logic
+      const filtered = newsList.filter(item => {
+        const matchCategory = activeCategory === "ALL" || item.category === activeCategory;
+        const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            item.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            item.author.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchCategory && matchSearch;
+      });
+
+      // Render Featured News
+      const featuredItem = newsList.find(n => n.isFeatured) || newsList[0];
+      if (featuredItem) {
+        const imgSrc = featuredItem.imageUrl || getDefaultImage(featuredItem.category);
+        featuredNewsContainer.innerHTML = `
+          <div class="hero-news">
+            <img src="${imgSrc}" alt="${featuredItem.title}" class="hero-news-img" onerror="this.src='https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000'" title="Klik untuk lihat ukuran penuh" onclick="openLightbox('${imgSrc}', '${escapeQuotes(featuredItem.title)}')">
+            <div class="hero-news-content">
+              <div>
+                <span class="tag">${featuredItem.category}</span>
+                ${featuredItem.isFeatured ? '<span class="badge-trending" style="position:static; margin-left:8px;">UTAMA</span>' : ''}
+              </div>
+              <h1>${featuredItem.title}</h1>
+              <p>${featuredItem.summary}</p>
+              <div class="news-meta" style="margin-bottom:20px;">
+                <span>👤 ${featuredItem.author}</span> • 
+                <span>📅 ${featuredItem.date}</span>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button class="button button-primary" onclick="openReadModal('${featuredItem.id}')">Baca Selengkapnya ↗</button>
+                <button class="button button-secondary" onclick="openEditModal('${featuredItem.id}')">Edit</button>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        featuredNewsContainer.innerHTML = '';
+      }
+
+      // Update Count Badge
+      newsCountEl.textContent = `(${filtered.length})`;
+
+      // Render Grid Cards
+      if (filtered.length === 0) {
+        newsGrid.innerHTML = `
+          <div class="empty-state">
+            <h3>Belum ada berita ditemukan</h3>
+            <p style="color:var(--muted); font-size:14px;">Coba gunakan kata kunci lain atau tambah artikel baru.</p>
+            <button class="button button-primary button-sm" style="margin-top:14px;" onclick="openFormModal()">+ Tambah Berita Baru</button>
+          </div>
+        `;
+        return;
+      }
+
+      newsGrid.innerHTML = filtered.map(item => {
+        const itemImgSrc = item.imageUrl || getDefaultImage(item.category);
+        return `
+          <article class="news-card">
+            <div class="news-card-img-wrap" title="Klik untuk lihat ukuran penuh" onclick="openLightbox('${itemImgSrc}', '${escapeQuotes(item.title)}')">
+              <img src="${itemImgSrc}" alt="${item.title}" class="news-card-img" onerror="this.src='https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000'">
+              ${item.isFeatured ? '<span class="badge-trending">UTAMA</span>' : ''}
+            </div>
+            <div class="news-card-body">
+              <div><span class="tag">${item.category}</span></div>
+              <h3>${item.title}</h3>
+              <p>${item.summary}</p>
+              <div class="news-meta" style="margin-bottom:14px;">
+                <span>👤 ${item.author}</span> • <span>${item.date}</span>
+              </div>
+              <div class="news-card-footer">
+                <button class="button button-primary button-sm" onclick="openReadModal('${item.id}')">Baca ↗</button>
+                <div class="card-actions">
+                  <button class="button button-secondary button-sm" onclick="openEditModal('${item.id}')" title="Edit Artikel">✏️ Edit</button>
+                  <button class="button button-danger button-sm" onclick="deleteNews('${item.id}')" title="Pindahkan ke Tong Sampah">🗑️</button>
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Escape String Helper for inline attributes
+    function escapeQuotes(str) {
+      return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    // 4. Render Trash Can Items
+    function renderTrash() {
+      trashBadge.textContent = trashList.length;
+
+      if (trashList.length === 0) {
+        btnEmptyTrash.style.display = "none";
+        trashContainer.innerHTML = `
+          <div class="empty-state" style="padding: 40px 20px;">
+            <h3>Tong Sampah Kosong</h3>
+            <p style="color:var(--muted); font-size:13px;">Tidak ada berita yang berada di dalam tong sampah saat ini.</p>
+          </div>
+        `;
+        return;
+      }
+
+      btnEmptyTrash.style.display = "inline-flex";
+      trashContainer.innerHTML = trashList.map(item => `
+        <div class="trash-item">
+          <div class="trash-item-info">
+            <h4>${item.title}</h4>
+            <span>📁 ${item.category} • 👤 ${item.author} • 📅 Dihapus pada: ${item.deletedAt || 'Baru Saja'}</span>
+          </div>
+          <div class="trash-actions">
+            <button class="button button-secondary button-sm" onclick="restoreNews('${item.id}')" title="Pulihkan Artikel">
+              🔄 Pulihkan
+            </button>
+            <button class="button button-danger button-sm" onclick="permanentlyDeleteNews('${item.id}')" title="Hapus Permanen">
+              ❌ Hapus Permanen
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Default Fallback Image
+    function getDefaultImage(cat) {
+      switch(cat) {
+        case 'Cloud Computing': return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000';
+        case 'Networking': return 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=1000';
+        case 'Artificial Intelligence': return 'https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=1000';
+        case 'Web Development': return 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000';
+        default: return 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000';
+      }
+    }
+
+    // 5. Event Listeners & CRUD Interactivity
+    function setupEventListeners() {
+      // Search Event Listener
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        renderNews();
+      });
+
+      // Filter Pill Listeners
+      categoryPills.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          categoryPills.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeCategory = btn.getAttribute("data-category");
+          updateTopicBarActive();
+          renderNews();
+        });
+      });
+
+      // Topic Strip Bar Listeners
+      document.querySelectorAll(".topic-filter").forEach(item => {
+        item.addEventListener("click", () => {
+          activeCategory = item.getAttribute("data-category");
+          updatePillsActive();
+          updateTopicBarActive();
+          renderNews();
+        });
+      });
+
+      // Modal Triggers
+      btnOpenAddModal.addEventListener("click", () => openFormModal());
+      btnCloseFormModal.addEventListener("click", () => closeFormModal());
+      btnCancelForm.addEventListener("click", () => closeFormModal());
+      btnCloseReadModal.addEventListener("click", () => closeReadModal());
+
+      // Trash Modal Triggers
+      btnOpenTrashModal.addEventListener("click", () => openTrashModal());
+      btnCloseTrashModal.addEventListener("click", () => closeTrashModal());
+      btnEmptyTrash.addEventListener("click", () => emptyTrash());
+
+      // Profile Modal Triggers
+      btnOpenProfileModal.addEventListener("click", () => openProfileModal());
+      btnCloseProfileModal.addEventListener("click", () => closeProfileModal());
+
+      // Lightbox Close Trigger
+      btnCloseLightbox.addEventListener("click", () => closeLightbox());
+      imageLightbox.addEventListener("click", (e) => {
+        if (e.target === imageLightbox) closeLightbox();
+      });
+
+      // ESC key to close Lightbox or Modals
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeLightbox();
+          closeFormModal();
+          closeReadModal();
+          closeTrashModal();
+          closeProfileModal();
+        }
+      });
+
+      // Overlay Clicks to Close
+      document.querySelectorAll(".modal-overlay").forEach(overlay => {
+        overlay.addEventListener("click", () => {
+          closeFormModal();
+          closeReadModal();
+          closeTrashModal();
+          closeProfileModal();
+        });
+      });
+
+      // Form Submit (Create or Update)
+      newsForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById("newsId").value;
+        const title = document.getElementById("newsTitle").value.trim();
+        const category = document.getElementById("newsCategory").value;
+        const author = document.getElementById("newsAuthor").value.trim();
+        const imageUrl = document.getElementById("newsImageUrl").value.trim();
+        const summary = document.getElementById("newsSummary").value.trim();
+        const content = document.getElementById("newsContent").value.trim();
+        const isFeatured = document.getElementById("newsIsFeatured").checked;
+
+        if (isFeatured) {
+          newsList.forEach(n => n.isFeatured = false);
+        }
+
+        if (id) {
+          // UPDATE Existing
+          const index = newsList.findIndex(n => n.id === id);
+          if (index !== -1) {
+            newsList[index] = {
+              ...newsList[index],
+              title, category, author, imageUrl, summary, content, isFeatured
+            };
+            showToast("Berita berhasil diperbarui! 📝");
+          }
+        } else {
+          // CREATE New
+          const newArticle = {
+            id: "news-" + Date.now(),
+            title,
+            category,
+            author,
+            date: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }),
+            imageUrl,
+            summary,
+            content,
+            isFeatured
+          };
+          newsList.unshift(newArticle);
+          showToast("Berita baru berhasil diterbitkan! 🚀");
+        }
+
+        saveNewsToStorage();
+        renderNews();
+        closeFormModal();
+      });
+    }
+
+    function updatePillsActive() {
+      categoryPills.querySelectorAll("button").forEach(b => {
+        if (b.getAttribute("data-category") === activeCategory) {
+          b.classList.add("active");
+        } else {
+          b.classList.remove("active");
+        }
+      });
+    }
+
+    function updateTopicBarActive() {
+      document.querySelectorAll(".topic-filter").forEach(t => {
+        if (t.getAttribute("data-category") === activeCategory) {
+          t.classList.add("active");
+        } else {
+          t.classList.remove("active");
+        }
+      });
+    }
+
+    // Modal Form Controllers
+    function openFormModal() {
+      newsForm.reset();
+      document.getElementById("newsId").value = "";
+      document.getElementById("formModalEyebrow").textContent = "TAMBAH ARTIKEL";
+      document.getElementById("formModalTitle").textContent = "Tulis Berita Baru";
+      newsFormModal.classList.add("active");
+    }
+
+    function openEditModal(id) {
+      const article = newsList.find(n => n.id === id);
+      if (!article) return;
+
+      document.getElementById("newsId").value = article.id;
+      document.getElementById("newsTitle").value = article.title;
+      document.getElementById("newsCategory").value = article.category;
+      document.getElementById("newsAuthor").value = article.author;
+      document.getElementById("newsImageUrl").value = article.imageUrl || "";
+      document.getElementById("newsSummary").value = article.summary;
+      document.getElementById("newsContent").value = article.content;
+      document.getElementById("newsIsFeatured").checked = !!article.isFeatured;
+
+      document.getElementById("formModalEyebrow").textContent = "EDIT ARTIKEL";
+      document.getElementById("formModalTitle").textContent = "Perbarui Berita";
+      newsFormModal.classList.add("active");
+    }
+
+    function closeFormModal() {
+      newsFormModal.classList.remove("active");
+    }
+
+    // Modal Read Controllers
+    window.openReadModal = function(id) {
+      const article = newsList.find(n => n.id === id);
+      if (!article) return;
+
+      document.getElementById("readCategory").textContent = article.category;
+      document.getElementById("readTitle").textContent = article.title;
+      document.getElementById("readAuthor").textContent = article.author;
+      document.getElementById("readDate").textContent = article.date;
+      document.getElementById("readContent").textContent = article.content;
+
+      const imgEl = document.getElementById("readImage");
+      imgEl.src = article.imageUrl || getDefaultImage(article.category);
+
+      const trendingBadge = document.getElementById("readTrending");
+      trendingBadge.style.display = article.isFeatured ? "inline-block" : "none";
+
+      readNewsModal.classList.add("active");
+    };
+
+    function closeReadModal() {
+      readNewsModal.classList.remove("active");
+    }
+
+    // Trash Modal Controllers
+    function openTrashModal() {
+      renderTrash();
+      trashModal.classList.add("active");
+    }
+
+    function closeTrashModal() {
+      trashModal.classList.remove("active");
+    }
+
+    // Profile Modal Controllers
+    function openProfileModal() {
+      profileModal.classList.add("active");
+    }
+
+    function closeProfileModal() {
+      profileModal.classList.remove("active");
+    }
+
+    // 6. LIGHTBOX FULLSCREEN IMAGE CONTROLLERS
+    window.openLightbox = function(src, caption) {
+      if (!src) return;
+      lightboxImg.src = src;
+      lightboxCaption.textContent = caption || "Pratinjau Gambar";
+      imageLightbox.classList.add("active");
+    };
+
+    function closeLightbox() {
+      imageLightbox.classList.remove("active");
+    }
+
+    // 7. TRASH & RECOVERY ACTIONS
+    // Pindahkan Berita ke Tong Sampah (Soft Delete)
+    window.deleteNews = function(id) {
+      const articleIndex = newsList.findIndex(n => n.id === id);
+      if (articleIndex === -1) return;
+
+      const article = newsList[articleIndex];
+      if (confirm(`Pindahkan berita "${article.title}" ke Tong Sampah?`)) {
+        // Tambahkan timestamp hapus
+        const deletedItem = {
+          ...article,
+          deletedAt: new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
+        };
+
+        trashList.unshift(deletedItem);
+        newsList.splice(articleIndex, 1);
+
+        saveNewsToStorage();
+        saveTrashToStorage();
+        renderNews();
+        renderTrash();
+        showToast("Berita dipindahkan ke Tong Sampah 🗑️");
+      }
+    };
+
+    // Pulihkan Berita dari Tong Sampah (Restore)
+    window.restoreNews = function(id) {
+      const trashIndex = trashList.findIndex(n => n.id === id);
+      if (trashIndex === -1) return;
+
+      const restoredArticle = { ...trashList[trashIndex] };
+      delete restoredArticle.deletedAt;
+
+      newsList.unshift(restoredArticle);
+      trashList.splice(trashIndex, 1);
+
+      saveNewsToStorage();
+      saveTrashToStorage();
+      renderNews();
+      renderTrash();
+      showToast("Berita berhasil dipulihkan! 🔄");
+    };
+
+    // Hapus Permanen dari Tong Sampah
+    window.permanentlyDeleteNews = function(id) {
+      const trashIndex = trashList.findIndex(n => n.id === id);
+      if (trashIndex === -1) return;
+
+      if (confirm("Apakah Anda yakin ingin menghapus berita ini secara PERMANEN? Tindakan ini tidak dapat dibatalkan.")) {
+        trashList.splice(trashIndex, 1);
+
+        saveTrashToStorage();
+        renderTrash();
+        showToast("Berita dihapus permanen ❌");
+      }
+    };
+
+    // Kosongkan Seluruh Tong Sampah
+    function emptyTrash() {
+      if (confirm("Apakah Anda yakin ingin mengosongkan SELURUH isi Tong Sampah? Semua item akan dihapus secara permanen.")) {
+        trashList = [];
+        saveTrashToStorage();
+        renderTrash();
+        showToast("Tong Sampah berhasil dikosongkan 🧹");
+      }
+    }
+
+    // Helper Toast Notification
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
